@@ -51,7 +51,34 @@ def add_client(request):
 
 @login_required
 def delete_client(request, pk):
-    client = get_object_or_404(client , created_by=request.user , pk=pk)
+    client = get_object_or_404(Client , created_by=request.user , pk=pk)
     client.delete()
     messages.success(request, "client deleted successfully!")
-    return redirect('show_clients')
+    return redirect('client_list')
+
+@login_required
+def client_details(request, pk):
+    client =get_object_or_404(Client , created_by=request.user , pk=pk)
+    return render(request, 'client/client_details.html', {'client': client})
+
+@login_required
+def client_edit(request , pk):
+    client = get_object_or_404(Client , created_by=request.user , pk=pk)
+    
+    if request.method == "POST":
+        form = AddClientForm(request.POST, instance=client)
+        
+        if form.is_valid():
+            form.save()
+            
+            messages.success(request, "client updated successfully!")
+            
+            return redirect('client_list')
+    else:
+        form= AddClientForm(instance=client )
+        
+    return render(request, 'client/client_edit.html',{
+        'form': form,
+    })
+        
+from django.http import JsonResponse

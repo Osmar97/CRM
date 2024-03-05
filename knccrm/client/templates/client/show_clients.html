@@ -18,7 +18,7 @@
         {% for client in clients %}
         <div class="grid grid-cols-7 gap-4 text-center mb-4" style="background-color: #FFFFFF; color: #111827; border-radius: 8px; padding: 10px;">
             <p>
-                <a href="#">{{ client.name }}</a>
+                <a href="{% url 'client_details' client.id %}">{{ client.name }}</a>
             </p>
             <p>{{ client.email }}</p>
             <p>{{ client.phone_number }}</p>
