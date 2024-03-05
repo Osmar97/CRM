@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% block title %}Show Leads{% endblock %}
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-3xl text-center font-semibold mb-8" style="color: #85754E">Leads</h1>
+
+    <div class="grid grid-cols-7 gap-4 text-center mb-4" style="background-color: #F3F4F6; color: #4B5563; border-radius: 8px; padding: 10px;">
+        <p class="font-semibold"><a href="?sort=name">Name</a></p>
+        <p class="font-semibold"><a href="?sort=email">Email</a></p>
+        <p class="font-semibold"><a href="?sort=phone_number">Phone Number</a></p>
+        <p class="font-semibold"><a href="?sort=company">Company</a></p>
+        <p class="font-semibold">Notes</p>
+        <p class="font-semibold">Priority</p>
+        <p class="font-semibold">Status</p>
+    </div>
+
+    <form method="POST" action="{% url 'update_status_priority_bulk' %}">
+        {% csrf_token %}
+        {% for lead in leads %}
+        <div class="grid grid-cols-7 gap-4 text-center mb-4" style="background-color: #FFFFFF; color: #111827; border-radius: 8px; padding: 10px;">
+            <p>
+                <a href="{% url 'lead_details' lead.id %}">{{ lead.name }}</a>
+            </p>
+            <p>{{ lead.email }}</p>
+            <p>{{ lead.phone_number }}</p>
+            <p>{{ lead.company }}</p>
+            <p>{{ lead.notes }}</p>
+            <input type="hidden" name="lead_ids[]" value="{{ lead.id }}">
+            <p>
+                <select name="priorities[]">
+                    {% for priority_choice in lead.LEAD_PRIORITY_CHOICES %}
+                    <option value="{{ priority_choice.0 }}" {% if lead.priority == priority_choice.0 %}selected{% endif %}>{{ priority_choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <select name="statuses[]">
+                    {% for status_choice in lead.STATUS_CHOICES %}
+                    <option value="{{ status_choice.0 }}" {% if lead.status == status_choice.0 %}selected{% endif %}>{{ status_choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        {% empty %}
+        <p>empty</p>
+        {% endfor %}
+        <div class="text-center mt-4">
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Save Changes</button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

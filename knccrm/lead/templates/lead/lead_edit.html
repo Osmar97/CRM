@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block title %}Edit {{ lead.name }}{% endblock %}
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-3xl text-center font-semibold mb-8" style="color: #85754E;">Editar lead</h1>
+    <form method="POST" action=".">
+        {% csrf_token %}
+
+        <div style="display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem;">
+            {% for field in form %}
+                <div style="border: 1px solid #E5E7EB; border-radius: 0.375rem;">
+                    <label class="block text-gray-700 mb-1">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li style="color: red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 1rem;">
+            <button style="padding: 0.75rem 1.5rem; background-color: #85754E; color: white; border: none; border-radius: 9999px; cursor: pointer; transition: background-color 0.3s ease-in-out;" type="submit">Guardar lead</button>
+        </div>
+</form>
+</div>
+
+{% endblock %}

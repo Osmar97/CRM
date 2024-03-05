@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block title %}Leads{% endblock %}
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl text-center font-semibold mb-8" style="color:#85754E">Leads</h1>
+    <div class="flex justify-center items-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-6 bg-gray-100 rounded-lg shadow-md text-center">
+                <a href="{% url 'add_lead' %}" class="btn-primary">Add Leads</a>
+            </div>
+            <div class="p-6 bg-gray-100 rounded-lg shadow-md text-center">
+                <a href="{% url 'show_lead' %}" class="btn-primary">Show Leads</a>
+            </div>
+            <div class="p-6 bg-gray-100 rounded-lg shadow-md text-center">
+                <label for="file-upload" class="btn-primary">Import Leads
+                    <input id="file-upload" type="file" class="hidden" accept=".xml">
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block title %}Show clients{% endblock %}
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-3xl text-center font-semibold mb-8" style="color: #85754E">clients</h1>
+
+    <div class="grid grid-cols-7 gap-4 text-center mb-4" style="background-color: #F3F4F6; color: #4B5563; border-radius: 8px; padding: 10px;">
+        <p class="font-semibold"><a href="?sort=name">Name</a></p>
+        <p class="font-semibold"><a href="?sort=email">Email</a></p>
+        <p class="font-semibold"><a href="?sort=phone_number">Phone Number</a></p>
+        <p class="font-semibold"><a href="?sort=company">Company</a></p>
+        <p class="font-semibold">Notes</p>
+        <p class="font-semibold">Priority</p>
+    </div>
+
+    <form method="POST" action="{% url 'update_priority_client_bulk' %}">
+        {% csrf_token %}
+        {% for client in clients %}
+        <div class="grid grid-cols-7 gap-4 text-center mb-4" style="background-color: #FFFFFF; color: #111827; border-radius: 8px; padding: 10px;">
+            <p>
+                <a href="#">{{ client.name }}</a>
+            </p>
+            <p>{{ client.email }}</p>
+            <p>{{ client.phone_number }}</p>
+            <p>{{ client.company }}</p>
+            <p>{{ client.notes }}</p>
+            <input type="hidden" name="client_ids[]" value="{{ client.id }}">
+            <p>
+                <select name="priorities[]">
+                    {% for priority_choice in client.LEAD_PRIORITY_CHOICES %}
+                    <option value="{{ priority_choice.0 }}" {% if client.priority == priority_choice.0 %}selected{% endif %}>{{ priority_choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
+        {% empty %}
+        <p>empty</p>
+        {% endfor %}
+        <div class="text-center mt-4">
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Save Changes</button>
+            <a href="{% url 'add_client' %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Client</a>
+        </div>
+    </form>
+    
+
+</div>
+{% endblock %}
